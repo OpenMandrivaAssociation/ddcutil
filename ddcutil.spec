@@ -54,7 +54,6 @@ Requires:       cmake-filesystem%{?_isa}
  
 %description -n libddcutil-devel
 Development files for libddcutil
-%endif
  
 %prep
 %setup -q
