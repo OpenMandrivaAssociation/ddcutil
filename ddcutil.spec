@@ -1,20 +1,14 @@
-%bcond_without build_lib
- 
 Name:       ddcutil
 Version:    2.0.0
-Release:    %autorelease
+Release:    1
 Summary:    Query and update monitor settings
 License:    GPLv2+
 URL:        http://www.ddcutil.com
 Source0:    https://github.com/rockowitz/ddcutil/archive/v%{version}/%{name}-%{version}.tar.gz
- 
-# Excluding arch s390/s390x due to i2c-tools does so
-ExcludeArch:    s390 s390x
- 
+
 BuildRequires:      automake
 BuildRequires:      autoconf
 BuildRequires:      libtool
-BuildRequires:      gcc
 BuildRequires:      make
 BuildRequires:      pkgconfig(glib-2.0)   >= 2.40
 BuildRequires:      pkgconfig(libusb-1.0) >= 1.0.15
@@ -45,8 +39,6 @@ Device on USB.  In general, anything that can be controlled using a monitor's
 on-screen display can be controlled by this program.  Examples include 
 changing a monitor's input source and adjusting its brightness.
  
-# libddcutil can be installed separately
-%if %{with build_lib}
 %package -n libddcutil
 Summary:        Shared library to query and update monitor settings
  
@@ -70,14 +62,13 @@ Development files for libddcutil
 %build
 NOCONFIGURE=1 ./autogen.sh
 %configure \
-%if %{with build_lib}
-    --enable-lib=yes
-%else
-    --enable-lib=no
-%endif
+            --enable-lib=yes
+            
 %make_build
+
 %install
 %make_install
+
 %files
 %doc AUTHORS NEWS.md README.md CHANGELOG.md
 %license COPYING
@@ -88,7 +79,6 @@ NOCONFIGURE=1 ./autogen.sh
 %{_udevrulesdir}/60-ddcutil-usb.rules
 %{_modulesloaddir}/ddcutil.conf
  
-%if %{with build_lib}
 %files -n libddcutil
 %doc AUTHORS NEWS.md README.md CHANGELOG.md
 %license COPYING
@@ -99,4 +89,3 @@ NOCONFIGURE=1 ./autogen.sh
 %{_includedir}/%{name}*.h
 %{_libdir}/cmake/%{name}
 %{_libdir}/pkgconfig/%{name}.pc
-%endif
