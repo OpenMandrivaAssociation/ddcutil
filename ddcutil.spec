@@ -1,5 +1,5 @@
 Name:       ddcutil
-Version:    2.0.0
+Version:    2.1.3
 Release:    1
 Summary:    Query and update monitor settings
 License:    GPLv2+
