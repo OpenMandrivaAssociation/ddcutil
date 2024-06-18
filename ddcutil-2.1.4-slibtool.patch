@@ -1,0 +1,24 @@
+diff -up ddcutil-2.1.4/configure.ac.omv~ ddcutil-2.1.4/configure.ac
+--- ddcutil-2.1.4/configure.ac.omv~	2024-06-18 23:46:54.080390698 +0200
++++ ddcutil-2.1.4/configure.ac	2024-06-18 23:47:06.560526064 +0200
+@@ -123,7 +123,7 @@ m4_version_prereq(2.70, [AC_PROG_CC], [A
+ 
+ dnl AC_PROG_LIBTOOL, AM_PROG_LIBTOOL are deprecated names for older versions of LT_INIT
+ dnl adds support for --enable/disable -static/shared, -with/without-pic configure flags
+-LT_INIT([disable-static])
++LT_INIT
+ 
+ dnl Automatically update libtool script if it becomes out of date:
+ AC_SUBST([LIBTOOL_DEPS])
+diff -up ddcutil-2.1.4/src/Makefile.am.omv~ ddcutil-2.1.4/src/Makefile.am
+--- ddcutil-2.1.4/src/Makefile.am.omv~	2024-06-18 23:48:33.537469793 +0200
++++ ddcutil-2.1.4/src/Makefile.am	2024-06-18 23:48:42.529567391 +0200
+@@ -295,7 +295,7 @@ endif
+ 
+ # doesn't prevent creation of .la 
+ # try disabling to create libddcutil.a - doesnt do it
+-libddcutil_la_LDFLAGS += --disable-static
++#libddcutil_la_LDFLAGS += --disable-static
+ 
+ endif
+ 

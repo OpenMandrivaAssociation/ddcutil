@@ -1,0 +1,65 @@
+diff -up ddcutil-2.1.4/src/app_sysenv/query_sysenv_i2c.c.omv~ ddcutil-2.1.4/src/app_sysenv/query_sysenv_i2c.c
+--- ddcutil-2.1.4/src/app_sysenv/query_sysenv_i2c.c.omv~	2024-06-18 23:42:35.517589651 +0200
++++ ddcutil-2.1.4/src/app_sysenv/query_sysenv_i2c.c	2024-06-18 23:42:54.169791453 +0200
+@@ -274,11 +274,11 @@ void test_edid_read_variants(Env_Accumul
+    rpt_title("Testing EDID read alternatives...",depth);
+    sysenv_rpt_current_time(NULL, d1);
+ 
+-   int  busct = 0;
++   //int  busct = 0;
+ 
+    for (int busno=0; busno < I2C_BUS_MAX; busno++) {
+       if (i2c_device_exists(busno)) {
+-         busct++;
++         //busct++;
+          rpt_nl();
+          rpt_vstring(d1, "Examining device /dev/i2c-%d...", busno);
+ 
+diff -up ddcutil-2.1.4/src/i2c/i2c_strategy_dispatcher.c.omv~ ddcutil-2.1.4/src/i2c/i2c_strategy_dispatcher.c
+--- ddcutil-2.1.4/src/i2c/i2c_strategy_dispatcher.c.omv~	2024-06-18 23:38:40.255049057 +0200
++++ ddcutil-2.1.4/src/i2c/i2c_strategy_dispatcher.c	2024-06-18 23:39:09.935369010 +0200
+@@ -185,7 +185,7 @@ Status_Errno_DDC invoke_i2c_writer(
+                  hexstring_t(bytes_to_write, bytect));
+ 
+    // n. prior to gcc 11, declaration cannot immediately follow label
+-   I2C_IO_Strategy * strategy = I2C_IO_STRATEGY_NOT_SET;
++   I2C_IO_Strategy * strategy = (void*)I2C_IO_STRATEGY_NOT_SET;
+ retry:
+    strategy = i2c_get_io_strategy();
+    DBGTRC_NOPREFIX(debug, TRACE_GROUP, "strategy = %s", strategy->strategy_name);
+@@ -232,7 +232,7 @@ Status_Errno_DDC invoke_i2c_reader(
+                    readbuf);
+ 
+      // n. prior to gcc 11, declaration cannot immediately follow label
+-     I2C_IO_Strategy * strategy = I2C_IO_STRATEGY_NOT_SET;
++     I2C_IO_Strategy * strategy = (void*)I2C_IO_STRATEGY_NOT_SET;
+ retry:
+      strategy = i2c_get_io_strategy();
+      DBGTRC_NOPREFIX(debug, TRACE_GROUP, "strategy = %s", strategy->strategy_name);
+diff -up ddcutil-2.1.4/src/libmain/api_displays.c.omv~ ddcutil-2.1.4/src/libmain/api_displays.c
+--- ddcutil-2.1.4/src/libmain/api_displays.c.omv~	2024-06-18 23:39:41.811712839 +0200
++++ ddcutil-2.1.4/src/libmain/api_displays.c	2024-06-18 23:40:45.328398526 +0200
+@@ -825,7 +825,7 @@ STATIC void init_display_info(Display_Re
+    }
+    memcpy(curinfo->edid_bytes,    dref->pedid->bytes, 128);
+ 
+-#if __GNUC__ >= 8
++#if __GNUC__ >= 8 && !defined(__clang__)
+ #pragma GCC diagnostic push
+ #pragma GCC diagnostic ignored "-Wstringop-truncation"
+    STRLCPY(curinfo->mfg_id,     dref->pedid->mfg_id,       EDID_MFG_ID_FIELD_SIZE);
+diff -up ddcutil-2.1.4/src/libmain/api_displays_internal.h.omv~ ddcutil-2.1.4/src/libmain/api_displays_internal.h
+--- ddcutil-2.1.4/src/libmain/api_displays_internal.h.omv~	2024-06-18 23:42:03.885247522 +0200
++++ ddcutil-2.1.4/src/libmain/api_displays_internal.h	2024-06-18 23:42:22.381447556 +0200
+@@ -20,6 +20,11 @@ Display_Handle * validated_ddca_display_
+ #endif
+ DDCA_Status validate_ddca_display_handle(DDCA_Display_Handle ddca_dh, Display_Handle** dh_loc);
+ 
++#ifdef __clang__
++// Needed for WITH_VALIDATED_DR3 use
++#pragma GCC diagnostic ignored "-Wcompound-token-split-by-macro"
++#endif
++
+ #define WITH_VALIDATED_DR3(_ddca_dref, _ddcrc, _action) \
+    do { \
+       assert(library_initialized); \

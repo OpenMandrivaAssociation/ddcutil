@@ -1,15 +1,14 @@
+%define libname %mklibname ddcutil
+%define devname %mklibname -d ddcutil
+
 Name:       ddcutil
-Version:    2.1.3
+Version:    2.1.4
 Release:    1
 Summary:    Query and update monitor settings
 License:    GPLv2+
 URL:        http://www.ddcutil.com
 Source0:    https://github.com/rockowitz/ddcutil/archive/v%{version}/%{name}-%{version}.tar.gz
 
-BuildRequires:      automake
-BuildRequires:      autoconf
-BuildRequires:      libtool
-BuildRequires:      make
 BuildRequires:      pkgconfig(glib-2.0)   >= 2.40
 BuildRequires:      pkgconfig(libusb-1.0) >= 1.0.15
 BuildRequires:      pkgconfig(systemd)
@@ -29,6 +28,13 @@ Recommends: pkg-config
 Recommends: /usr/bin/lscpu
 Recommends: /usr/bin/lsb_release
 Recommends: xrandr
+
+BuildSystem: autotools
+BuildOption: --enable-lib
+
+%patchlist
+ddcutil-2.1.4-compile.patch
+ddcutil-2.1.4-slibtool.patch
  
 %description
 Query and change monitor settings
@@ -39,34 +45,23 @@ Device on USB.  In general, anything that can be controlled using a monitor's
 on-screen display can be controlled by this program.  Examples include 
 changing a monitor's input source and adjusting its brightness.
  
-%package -n libddcutil
+%package -n %{libname}
 Summary:        Shared library to query and update monitor settings
  
-%description -n libddcutil
+%description -n %{libname}
 Shared library version of ddcutil, exposing a C API.
  
-%package -n libddcutil-devel
+%package -n %{devname}
 Summary:        Development files for libddcutil
 # FindDDCUtils.cmake has BSD license header
 License:        GPLv2+ and BSD
-Requires:       libddcutil%{?_isa} = %{version}-%{release}
-Requires:       cmake-filesystem%{?_isa}
+Requires:       %{libname} = %{EVRD}
  
-%description -n libddcutil-devel
+%description -n %{devname}
 Development files for libddcutil
  
-%prep
-%setup -q
- 
-%build
+%prep -a
 NOCONFIGURE=1 ./autogen.sh
-%configure \
-            --enable-lib=yes
-            
-%make_build
-
-%install
-%make_install
 
 %files
 %doc AUTHORS NEWS.md README.md CHANGELOG.md
@@ -78,12 +73,12 @@ NOCONFIGURE=1 ./autogen.sh
 %{_udevrulesdir}/60-ddcutil-usb.rules
 %{_modulesloaddir}/ddcutil.conf
  
-%files -n libddcutil
+%files -n %{libname}
 %doc AUTHORS NEWS.md README.md CHANGELOG.md
 %license COPYING
 %{_libdir}/lib%{name}.so.5*
  
-%files -n libddcutil-devel
+%files -n %{devname}
 %{_libdir}/lib%{name}.so
 %{_includedir}/%{name}*.h
 %{_libdir}/cmake/%{name}
