@@ -6,7 +6,7 @@ Version:    2.1.4
 Release:    1
 Summary:    Query and update monitor settings
 License:    GPLv2+
-URL:        http://www.ddcutil.com
+URL:        https://www.ddcutil.com
 Source0:    https://github.com/rockowitz/ddcutil/archive/v%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires:      pkgconfig(glib-2.0)   >= 2.40
