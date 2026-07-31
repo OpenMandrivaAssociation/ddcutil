@@ -2,7 +2,7 @@
 %define devname %mklibname -d ddcutil
 
 Name:       ddcutil
-Version:    2.1.4
+Version:    2.2.7
 Release:    1
 Summary:    Query and update monitor settings
 License:    GPLv2+
@@ -33,8 +33,8 @@ BuildSystem: autotools
 BuildOption: --enable-lib
 
 %patchlist
-ddcutil-2.1.4-compile.patch
-ddcutil-2.1.4-slibtool.patch
+# dropped (no longer applies): ddcutil-2.2.7-compile.patch
+# dropped (no longer applies): ddcutil-2.2.7-slibtool.patch
  
 %description
 Query and change monitor settings
