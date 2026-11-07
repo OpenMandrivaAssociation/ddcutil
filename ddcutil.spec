@@ -2,7 +2,7 @@
 %define devname %mklibname -d ddcutil
 
 Name:       ddcutil
-Version:    2.2.7
+Version:    3.0.2
 Release:    1
 Summary:    Query and update monitor settings
 License:    GPLv2+
@@ -17,6 +17,8 @@ BuildRequires:      pkgconfig(xrandr)
 BuildRequires:      pkgconfig(libdrm) >= 2.4.67
 BuildRequires:      pkgconfig(libkmod)
 BuildRequires:      pkgconfig(jansson) >= 2.0
+BuildRequires:      pkgconfig(libacl)
+BuildRequires:      pkgconfig(dbus-1)
  
 Requires:   hwdata
 Requires:   i2c-tools
