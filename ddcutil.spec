@@ -67,6 +67,8 @@ Requires:       %{libname} = %{EVRD}
 Development files for libddcutil
  
 %prep -a
+sed -i '/libddcutil_la_LDFLAGS += --disable-static/d' src/Makefile.am
+
 NOCONFIGURE=1 ./autogen.sh
 
 sed -i \
