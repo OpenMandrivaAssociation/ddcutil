@@ -63,7 +63,8 @@ Requires:       %{libname} = %{EVRD}
 Development files for libddcutil
  
 %prep -a
-#NOCONFIGURE=1 ./autogen.sh
+#NOCONFIGURE=1 
+./autogen.sh
 
 %files
 %doc AUTHORS NEWS.md README.md CHANGELOG.md
