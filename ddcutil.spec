@@ -74,6 +74,11 @@ sed -i \
     -e '/vcp_feature_codes_initialized = true;/d' \
     src/vcp/vcp_feature_codes.c
 
+sed -i \
+    -e '/static bool              nvidia_einval_bug_encountered = false;/d' \
+    -e '/nvidia_einval_bug_encountered = true;/d' \
+    src/i2c/i2c_strategy_dispatcher.c    
+
 %files
 %doc AUTHORS NEWS.md README.md CHANGELOG.md
 %license COPYING
