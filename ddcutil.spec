@@ -79,6 +79,11 @@ sed -i \
     -e '/nvidia_einval_bug_encountered = true;/d' \
     src/i2c/i2c_strategy_dispatcher.c    
 
+sed -i \
+    -e '/static bool known_good_drivers_seen = false;/d' \
+    -e '/known_good_drivers_seen = true;/d' \
+    src/sysfs/sysfs_base.c    
+
 %files
 %doc AUTHORS NEWS.md README.md CHANGELOG.md
 %license COPYING
