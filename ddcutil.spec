@@ -9,6 +9,7 @@ License:    GPLv2+
 URL:        https://www.ddcutil.com
 Source0:    https://github.com/rockowitz/ddcutil/archive/v%{version}/%{name}-%{version}.tar.gz
 
+BuildRequires:	    autoconf
 BuildRequires:      pkgconfig(glib-2.0)   >= 2.40
 BuildRequires:      pkgconfig(libusb-1.0) >= 1.0.15
 BuildRequires:      pkgconfig(systemd)
