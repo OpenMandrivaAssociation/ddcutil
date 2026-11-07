@@ -11,7 +11,7 @@ Source0:    https://github.com/rockowitz/ddcutil/archive/v%{version}/%{name}-%{v
 
 BuildRequires:	    automake
 BuildRequires:	    autoconf
-BuildRequires:     libtool
+BuildRequires:     libtool slibtool
 BuildRequires:      pkgconfig(glib-2.0)   >= 2.40
 BuildRequires:      pkgconfig(libusb-1.0) >= 1.0.15
 BuildRequires:      pkgconfig(systemd)
