@@ -69,6 +69,11 @@ Development files for libddcutil
 %prep -a
 NOCONFIGURE=1 ./autogen.sh
 
+sed -i \
+    -e '/static bool vcp_feature_codes_initialized = false;/d' \
+    -e '/vcp_feature_codes_initialized = true;/d' \
+    src/vcp/vcp_feature_codes.c
+
 %files
 %doc AUTHORS NEWS.md README.md CHANGELOG.md
 %license COPYING
