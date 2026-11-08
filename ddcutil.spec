@@ -71,6 +71,7 @@ sed -i '/libddcutil_la_LDFLAGS += --disable-static/d' src/Makefile.am
 
 NOCONFIGURE=1 ./autogen.sh
 
+# workaround for new slib
 sed -i \
     -e '/static bool vcp_feature_codes_initialized = false;/d' \
     -e '/vcp_feature_codes_initialized = true;/d' \
@@ -92,7 +93,7 @@ sed -i \
 %{_bindir}/%{name}
 %{_datadir}/%{name}
 %{_mandir}/man1/%{name}.1.*
-#{_udevrulesdir}/60-ddcutil-usb.rules
+%{_udevrulesdir}/60-ddcutil-i2c.rules
 %{_modulesloaddir}/ddcutil.conf
  
 %files -n %{libname}
