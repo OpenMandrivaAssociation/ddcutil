@@ -92,7 +92,7 @@ sed -i \
 %{_bindir}/%{name}
 %{_datadir}/%{name}
 %{_mandir}/man1/%{name}.1.*
-%{_udevrulesdir}/60-ddcutil-usb.rules
+#{_udevrulesdir}/60-ddcutil-usb.rules
 %{_modulesloaddir}/ddcutil.conf
  
 %files -n %{libname}
