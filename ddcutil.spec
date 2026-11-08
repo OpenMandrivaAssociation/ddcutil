@@ -2,13 +2,17 @@
 %define devname %mklibname -d ddcutil
 
 Name:       ddcutil
-Version:    2.2.7
+Version:    3.0.2
 Release:    1
 Summary:    Query and update monitor settings
 License:    GPLv2+
 URL:        https://www.ddcutil.com
 Source0:    https://github.com/rockowitz/ddcutil/archive/v%{version}/%{name}-%{version}.tar.gz
 
+BuildRequires:     make
+BuildRequires:	    automake
+BuildRequires:	    autoconf
+BuildRequires:     libtool slibtool
 BuildRequires:      pkgconfig(glib-2.0)   >= 2.40
 BuildRequires:      pkgconfig(libusb-1.0) >= 1.0.15
 BuildRequires:      pkgconfig(systemd)
@@ -17,6 +21,8 @@ BuildRequires:      pkgconfig(xrandr)
 BuildRequires:      pkgconfig(libdrm) >= 2.4.67
 BuildRequires:      pkgconfig(libkmod)
 BuildRequires:      pkgconfig(jansson) >= 2.0
+BuildRequires:      pkgconfig(libacl)
+BuildRequires:      pkgconfig(dbus-1)
  
 Requires:   hwdata
 Requires:   i2c-tools
@@ -61,7 +67,25 @@ Requires:       %{libname} = %{EVRD}
 Development files for libddcutil
  
 %prep -a
+sed -i '/libddcutil_la_LDFLAGS += --disable-static/d' src/Makefile.am
+
 NOCONFIGURE=1 ./autogen.sh
+
+# workaround for new slib
+sed -i \
+    -e '/static bool vcp_feature_codes_initialized = false;/d' \
+    -e '/vcp_feature_codes_initialized = true;/d' \
+    src/vcp/vcp_feature_codes.c
+
+sed -i \
+    -e '/static bool              nvidia_einval_bug_encountered = false;/d' \
+    -e '/nvidia_einval_bug_encountered = true;/d' \
+    src/i2c/i2c_strategy_dispatcher.c    
+
+sed -i \
+    -e '/static bool known_good_drivers_seen = false;/d' \
+    -e '/known_good_drivers_seen = true;/d' \
+    src/sysfs/sysfs_base.c    
 
 %files
 %doc AUTHORS NEWS.md README.md CHANGELOG.md
@@ -70,7 +94,6 @@ NOCONFIGURE=1 ./autogen.sh
 %{_datadir}/%{name}
 %{_mandir}/man1/%{name}.1.*
 %{_udevrulesdir}/60-ddcutil-i2c.rules
-%{_udevrulesdir}/60-ddcutil-usb.rules
 %{_modulesloaddir}/ddcutil.conf
  
 %files -n %{libname}
